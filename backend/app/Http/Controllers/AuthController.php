@@ -23,9 +23,10 @@ class AuthController extends Controller
         );
 
         $user = User::create($fields);
+        $user->refresh();
 
         $data = [
-            "user" => User::where('email', $user->email)->first(),
+            "user" => $user,
             "token" => $user->createToken($user->first_name)->plainTextToken,
         ];
 
@@ -50,7 +51,7 @@ class AuthController extends Controller
                 ]
             ];
             
-            return response()->json($data, 422);
+            return response()->json($data, 401);
         }
 
         $data = [

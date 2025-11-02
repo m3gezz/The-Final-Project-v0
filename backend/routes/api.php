@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectMemberController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,9 @@ Route::apiResource('/users', UserController::class)->middleware('auth:sanctum');
 
 //Projects
 Route::apiResource('/projects', ProjectController::class)->middleware('auth:sanctum');
+
+//Project members
+Route::apiResource('/projectMembers', ProjectMemberController::class)->middleware('auth:sanctum');
 
 Route::get('/', function () {
     return ['message' => 'api'];
