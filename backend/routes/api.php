@@ -18,7 +18,7 @@ Route::apiResource('/users', UserController::class)->middleware('auth:sanctum');
 Route::apiResource('/projects', ProjectController::class)->middleware('auth:sanctum');
 
 //Project members
-Route::apiResource('/projectMembers', ProjectMemberController::class)->middleware('auth:sanctum');
+Route::apiResource('/members', ProjectMemberController::class)->middleware('auth:sanctum');
 
 Route::get('/', function () {
     return ['message' => 'api'];
