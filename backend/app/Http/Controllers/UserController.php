@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data = User::all();
+        $data = User::paginate(20);
 
         return response()->json($data, 200);
     }
@@ -50,7 +50,7 @@ class UserController extends Controller
                 'new_password' => 'sometimes|string|min:5|max:50|confirmed',
                 'bio' => 'sometimes|string|max:255',
                 'avatar_url' => 'sometimes|string',
-                // 'skills' => 'sometimes|string',
+                'skills' => 'sometimes|array',
             ]
         );
 

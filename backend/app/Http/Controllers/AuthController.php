@@ -17,7 +17,7 @@ class AuthController extends Controller
                 'password' => 'required|string|min:5|max:50|confirmed',
                 'bio' => 'sometimes|string|max:255',
                 'avatar_url' => 'sometimes|string',
-                // 'skills' => 'sometimes|string',
+                'skills' => 'sometimes|array',
                 'admin' => 'sometimes|boolean',
             ]
         );

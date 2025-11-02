@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectMemberController;
 use App\Http\Controllers\UserController;
@@ -19,6 +20,9 @@ Route::apiResource('/projects', ProjectController::class)->middleware('auth:sanc
 
 //Project members
 Route::apiResource('/members', ProjectMemberController::class)->middleware('auth:sanctum');
+
+//Categories
+Route::apiResource('/category', CategoryController::class);
 
 Route::get('/', function () {
     return ['message' => 'api'];

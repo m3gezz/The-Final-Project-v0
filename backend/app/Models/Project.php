@@ -14,7 +14,7 @@ class Project extends Model
         'user_id',
         'title',
         'description',
-        // 'category',
+        'category_id',
     ];
 
     public function user() {
@@ -23,5 +23,9 @@ class Project extends Model
 
     public function members() {
         return $this->hasMany(ProjectMember::class);
+    }
+
+    public function category() {
+        return $this->belongsTo(Category::class);
     }
 }

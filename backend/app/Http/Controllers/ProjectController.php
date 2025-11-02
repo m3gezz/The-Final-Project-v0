@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\ProjectMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -13,7 +14,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $data = Project::all();
+        $data = Project::paginate(20);
 
         return response()->json($data, 200);
     }
@@ -27,12 +28,20 @@ class ProjectController extends Controller
             [
                 'title' => 'required|string|min:5|max:255',
                 'description' => 'required|string|min:10',
-                // 'category' => 'required|integer',
+                'category' => 'required|exists:categories,id',
                 // 'images' => 'sometimes|json',
             ]
         );
 
         $project = $request->user()->projects()->create($fields);
+        
+        $projectMember = [
+            'project_id' => $project->id,
+            'user_id' => $project->user_id,
+            'role' => "admin",
+        ];
+
+        ProjectMember::create($projectMember);
 
         return response()->json($project, 200);
     }
@@ -55,7 +64,7 @@ class ProjectController extends Controller
             [
                 'title' => 'sometimes|string|min:5|max:255',
                 'description' => 'sometimes|string|min:10',
-                // 'category' => 'sometimes|integer',
+                'category' => 'sometimes|exists:categories,id',
                 // 'images' => 'sometimes|json',
             ]
         );
