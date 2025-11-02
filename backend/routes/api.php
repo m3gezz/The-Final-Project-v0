@@ -22,7 +22,7 @@ Route::apiResource('/projects', ProjectController::class)->middleware('auth:sanc
 Route::apiResource('/members', ProjectMemberController::class)->middleware('auth:sanctum');
 
 //Categories
-Route::apiResource('/category', CategoryController::class);
+Route::apiResource('/categories', CategoryController::class);
 
 Route::get('/', function () {
     return ['message' => 'api'];
