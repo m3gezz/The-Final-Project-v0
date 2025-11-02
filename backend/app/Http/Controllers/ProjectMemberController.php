@@ -14,14 +14,15 @@ class ProjectMemberController extends Controller
      */
     public function index(Request $request)
     {
-        $members = Project::find($request->project_id)->members;
+        $members = Project::findOrFail($request->project_id)->members;
 
         $data = $members->map(function ($member) {
             return array_merge(
                 $member->user->toArray(), 
                 [
                     'role' => $member->role,
-                    'member_at' => $member->created_at
+                    'member_at' => $member->created_at,
+                    'invited_by' => $member->invited_by
                 ]
             );
         });
@@ -34,8 +35,8 @@ class ProjectMemberController extends Controller
      */
     public function store(Request $request)
     {
-        $project = Project::find($request->project_id);
-        Gate::authorize('create', $project);
+        $project = Project::findOrFail($request->project_id);
+        Gate::authorize('create', [ProjectMember::class, $project]);
 
         $fields = $request->validate(
             [
@@ -55,7 +56,7 @@ class ProjectMemberController extends Controller
         $fields['invited_by'] = $request->user()->only(['id', 'first_name', 'last_name']);
         $projectMember = ProjectMember::create($fields);
 
-        return response()->json($projectMember->user, 200);
+        return response()->json($projectMember, 200);
     }
 
     /**
@@ -67,7 +68,8 @@ class ProjectMemberController extends Controller
             $projectMember->user->toArray(),
             [
                 'role' => $projectMember->role,
-                'member_at' => $projectMember->created_at
+                'member_at' => $projectMember->created_at,
+                'invited_by' => $projectMember->invited_by
             ]
         );
         
@@ -88,7 +90,16 @@ class ProjectMemberController extends Controller
 
         $projectMember->update($fields);
 
-        return response()->json($projectMember, 200);
+        $data = array_merge(
+            $projectMember->user->toArray(),
+            [
+                'role' => $projectMember->role,
+                'member_at' => $projectMember->created_at,
+                'invited_by' => $projectMember->invited_by
+            ]
+        );
+
+        return response()->json($data, 200);
     }
 
     /**

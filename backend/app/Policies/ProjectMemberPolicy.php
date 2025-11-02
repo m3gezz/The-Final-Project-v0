@@ -30,7 +30,11 @@ class ProjectMemberPolicy
     public function create(User $user, Project $project): bool
     {
         if (!$project) return false;
-        return $user->id === $project->user_id || $user->admin;
+        $adminIds = $project->members
+        ->where('role', 'admin')
+        ->pluck('user_id');
+
+        return $user->id === $project->user_id || $adminIds->contains($user->id) || $user->admin;
     }
 
     /**
@@ -38,6 +42,10 @@ class ProjectMemberPolicy
      */
     public function update(User $user, ProjectMember $projectMember): bool
     {
+        if ($projectMember->user_id === $user->id || $projectMember->project->user_id === $projectMember->user_id) {
+            return false;
+        }
+
         $adminIds = $projectMember->project->members
         ->where('role', 'admin')
         ->pluck('user_id');
@@ -50,7 +58,7 @@ class ProjectMemberPolicy
      */
     public function delete(User $user, ProjectMember $projectMember): bool
     {
-        if ($projectMember->user_id === $user->id) {
+        if ($projectMember->user_id === $user->id || $projectMember->project->user_id === $projectMember->user_id) {
             return false;
         }
 

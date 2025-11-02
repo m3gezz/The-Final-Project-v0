@@ -17,6 +17,10 @@ class ProjectMember extends Model
         'invited_by'
     ];
 
+    protected $casts = [
+        'invited_by' => 'array',
+    ];
+
     public function project() {
         return $this->belongsTo(Project::class);
     }
