@@ -3,5 +3,5 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return ['message' => 'hi'];
+    return ['message' => 'api ready'];
 });
