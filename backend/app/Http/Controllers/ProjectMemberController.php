@@ -14,20 +14,9 @@ class ProjectMemberController extends Controller
      */
     public function index(Request $request)
     {
-        $members = Project::findOrFail($request->project_id)->members;
+        $members = Project::with('members.user')->findOrFail($request->project_id)->members;
 
-        $data = $members->map(function ($member) {
-            return array_merge(
-                $member->user->toArray(), 
-                [
-                    'role' => $member->role,
-                    'member_at' => $member->created_at,
-                    'invited_by' => $member->invited_by
-                ]
-            );
-        });
-
-        return response()->json($data, 200);
+        return response()->json($members, 200);
     }
 
     /**
@@ -64,16 +53,7 @@ class ProjectMemberController extends Controller
      */
     public function show(ProjectMember $projectMember)
     {
-        $data = array_merge(
-            $projectMember->user->toArray(),
-            [
-                'role' => $projectMember->role,
-                'member_at' => $projectMember->created_at,
-                'invited_by' => $projectMember->invited_by
-            ]
-        );
-        
-        return response()->json($data, 200);
+        return response()->json($projectMember->load('user'), 200);
     }
 
     /**

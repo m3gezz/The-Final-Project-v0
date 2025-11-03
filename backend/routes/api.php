@@ -19,7 +19,7 @@ Route::apiResource('/users', UserController::class)->middleware('auth:sanctum');
 Route::apiResource('/projects', ProjectController::class)->middleware('auth:sanctum');
 
 //Project members
-Route::apiResource('/members', ProjectMemberController::class)->middleware('auth:sanctum');
+Route::apiResource('/project_members', ProjectMemberController::class)->middleware('auth:sanctum');
 
 //Categories
 Route::apiResource('/categories', CategoryController::class);
