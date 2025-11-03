@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectMemberController;
+use App\Http\Controllers\ProjectRequestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,9 @@ Route::apiResource('/projects', ProjectController::class)->middleware('auth:sanc
 
 //Project members
 Route::apiResource('/project_members', ProjectMemberController::class)->middleware('auth:sanctum');
+
+//Project requests
+Route::apiResource('/project_requests', ProjectRequestController::class)->middleware('auth:sanctum');
 
 //Categories
 Route::apiResource('/categories', CategoryController::class);

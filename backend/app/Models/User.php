@@ -60,4 +60,9 @@ class User extends Authenticatable
     public function projectMemberships() {
         return $this->hasMany(ProjectMember::class);
     }
+
+    public function projectRequests() {
+        return $this->hasMany(ProjectRequest::class);
+    }
+    
 }
