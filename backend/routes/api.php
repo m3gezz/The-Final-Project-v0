@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectMemberController;
 use App\Http\Controllers\ProjectRequestController;
@@ -25,8 +26,11 @@ Route::apiResource('/project_members', ProjectMemberController::class)->middlewa
 //Project requests
 Route::apiResource('/project_requests', ProjectRequestController::class)->middleware('auth:sanctum');
 
+//Project comments
+Route::apiResource('/comments', CommentController::class)->middleware('auth:sanctum');
+
 //Categories
-Route::apiResource('/categories', CategoryController::class);
+Route::apiResource('/categories', CategoryController::class)->middleware('auth:sanctum');
 
 Route::get('/', function () {
     return ['message' => 'api'];

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
@@ -22,6 +23,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', [Category::class]);
         $fields = $request->validate(
             [
                 'category' => 'required|string|min:5|max:50'
@@ -46,6 +48,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        Gate::authorize('update', [Category::class]);
         $fields = $request->validate(
             [
                 'category' => 'sometimes|string|min:5|max:50'
@@ -62,6 +65,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        Gate::authorize('delete', [Category::class]);
         $category->delete();
 
         $data = ['message' => 'Deleted successfully'];

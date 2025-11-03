@@ -32,4 +32,8 @@ class Project extends Model
     public function projectRequests() {
         return $this->hasMany(ProjectRequest::class);
     }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
 }
