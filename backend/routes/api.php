@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectMemberController;
 use App\Http\Controllers\ProjectRequestController;
 use App\Http\Controllers\UserController;
+
 use Illuminate\Support\Facades\Route;
 
 //Authentication
@@ -29,8 +32,14 @@ Route::apiResource('/project_requests', ProjectRequestController::class)->middle
 //Project comments
 Route::apiResource('/comments', CommentController::class)->middleware('auth:sanctum');
 
+//Project likes
+Route::apiResource('/likes', LikeController::class)->middleware('auth:sanctum');
+
 //Categories
 Route::apiResource('/categories', CategoryController::class)->middleware('auth:sanctum');
+
+//Badges
+Route::apiResource('/badges', BadgeController::class)->middleware('auth:sanctum');
 
 Route::get('/', function () {
     return ['message' => 'api'];

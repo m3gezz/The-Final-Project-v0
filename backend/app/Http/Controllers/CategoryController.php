@@ -48,7 +48,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        Gate::authorize('update', [Category::class]);
+        Gate::authorize('update', $category);
         $fields = $request->validate(
             [
                 'category' => 'sometimes|string|min:5|max:50'
@@ -65,7 +65,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        Gate::authorize('delete', [Category::class]);
+        Gate::authorize('delete', $category);
         $category->delete();
 
         $data = ['message' => 'Deleted successfully'];
