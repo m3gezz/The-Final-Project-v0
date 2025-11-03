@@ -9,4 +9,9 @@ class Badge extends Model
 {
     /** @use HasFactory<\Database\Factories\BadgeFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'badge',
+        'description',
+    ];
 }

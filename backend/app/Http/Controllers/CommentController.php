@@ -30,8 +30,8 @@ class CommentController extends Controller
         );
 
         $fields['owner'] = $request->user()->only(['id', 'first_name', 'last_name', 'avatar_url']);
-
-        $comment = Comment::create($fields);
+        $comment = $request->user()->comments()->create($fields);
+        
         return response()->json($comment, 200);
     }
 

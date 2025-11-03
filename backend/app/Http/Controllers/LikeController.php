@@ -13,7 +13,7 @@ class LikeController extends Controller
      */
     public function index(Request $request)
     {
-        $likes = Like::where('project_id', $request->project_id)->count();
+        $likes = Like::where('project_id', $request->project_id)->get();
         return response()->json($likes, 200);
     }
 
@@ -36,8 +36,9 @@ class LikeController extends Controller
         }
 
         $fields['owner'] = $request->user()->only(['id', 'first_name', 'last_name', 'avatar_url']);
+        $like = $request->user()->likes()->create($fields);
 
-        $like = Like::create($fields);
+        // $like = Like::create($fields);
         return response()->json($like, 200);
     }
 

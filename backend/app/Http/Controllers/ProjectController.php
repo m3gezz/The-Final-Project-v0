@@ -14,8 +14,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $data = Project::with(['user','members.user','category'])->paginate(20);
-
+        $data = Project::with(['user','members.user','category'])->withCount(['comments', 'likes'])->paginate(20);
         return response()->json($data, 200);
     }
 
@@ -52,7 +51,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $project->load(['user', 'members.user','category']);
+        $project->load(['user', 'members.user','category', 'comments'])->loadCount(['likes']);
 
         return response()->json($project, 200);
     }
