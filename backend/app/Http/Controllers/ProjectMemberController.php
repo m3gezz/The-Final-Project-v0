@@ -42,7 +42,7 @@ class ProjectMemberController extends Controller
             return response()->json($data, 422);
         }
 
-        $fields['invited_by'] = $request->user()->only(['id', 'first_name', 'last_name']);
+        $fields['invited_by'] = $request->user()->only(['id', 'first_name', 'last_name', 'avatar_url']);
         $projectMember = ProjectMember::create($fields);
 
         return response()->json($projectMember, 200);
@@ -70,16 +70,7 @@ class ProjectMemberController extends Controller
 
         $projectMember->update($fields);
 
-        $data = array_merge(
-            $projectMember->user->toArray(),
-            [
-                'role' => $projectMember->role,
-                'member_at' => $projectMember->created_at,
-                'invited_by' => $projectMember->invited_by
-            ]
-        );
-
-        return response()->json($data, 200);
+        return response()->json($projectMember->load('user'), 200);
     }
 
     /**

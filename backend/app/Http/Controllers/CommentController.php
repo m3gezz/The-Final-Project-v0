@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
-use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,7 +13,7 @@ class CommentController extends Controller
      */
     public function index(Request $request)
     {
-        $comments = Project::findOrFail($request->project_id)->comments;
+        $comments = Comment::where('project_id', $request->project_id)->get();
         return response()->json($comments, 200);
     }
 
@@ -30,7 +29,7 @@ class CommentController extends Controller
             ]
         );
 
-        $fields['owner'] = $request->user()->only(['id', 'first_name', 'last_name']);
+        $fields['owner'] = $request->user()->only(['id', 'first_name', 'last_name', 'avatar_url']);
 
         $comment = Comment::create($fields);
         return response()->json($comment, 200);

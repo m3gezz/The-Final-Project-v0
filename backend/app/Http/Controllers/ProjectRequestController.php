@@ -68,11 +68,10 @@ class ProjectRequestController extends Controller
         $projectRequest->update($fields);
 
         if ($fields['status'] === 'accepted') {
-            $inviter = $request->user()->only(['id', 'first_name', 'last_name']);
             $projectMember = [
                 'project_id' => $projectRequest->project_id,
                 'user_id' => $projectRequest->user_id,
-                'invited_by' => $inviter
+                'invited_by' => $request->user()->only(['id', 'first_name', 'last_name', 'avatar_url'])
             ];
 
             ProjectMember::create($projectMember);
