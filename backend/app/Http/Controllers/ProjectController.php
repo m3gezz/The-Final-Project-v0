@@ -15,21 +15,18 @@ class ProjectController extends Controller
 
     public function userProjects(Request $request)
     {
-        $request->validate(['user_id' => 'required|exists:users,id']);
-
-        $projects = Project::with(['members', 'category', 'user'])->withCount('likes')
+        if ($request->has('user_id')) {
+            $request->validate(['user_id' => 'required|exists:users,id']);
+            $projects = Project::with(['members', 'category', 'user'])->withCount('likes')
                         ->whereHas('members', function ($query) use ($request) {
                             $query->where('user_id', $request->user_id);
                         })
                         ->paginate(20);
 
-        return response()->json($projects, 200);
-    }
+            return response()->json($projects, 200);
+        }
 
-    public function userOwnedProjects(Request $request)
-    {
         $projects = $request->user()->projects()->with(['members', 'category', 'user'])->withCount('likes')->paginate(20);
-                        
         return response()->json($projects, 200);
     }
 

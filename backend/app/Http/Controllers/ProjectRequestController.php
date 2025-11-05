@@ -10,23 +10,17 @@ use Illuminate\Support\Facades\Gate;
 class ProjectRequestController extends Controller
 {
     /**
-     * Display a listing of the user's resources.
-     */
-
-    public function userProjectRequests(Request $request)
-    {
-        $projectRequests = $request->user()->projectRequests()->with('project')->paginate(20);
-
-        return response()->json($projectRequests, 200);
-    }
-
-    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $projectRequests = ProjectRequest::with('user')->where('project_id', $request->project_id)->where('status', 'pending')->get();
-        
+        if ($request->has('project_id')) {
+            $request->validate(['project_id' => 'required|exists:projects,id']);
+            $projectRequests = ProjectRequest::with('user')->where('project_id', $request->project_id)->where('status', 'pending')->paginate(20);
+            return response()->json($projectRequests, 200);
+        }
+        $projectRequests = $request->user()->projectRequests()->with('project')->paginate(20);
+
         return response()->json($projectRequests, 200);
     }
 

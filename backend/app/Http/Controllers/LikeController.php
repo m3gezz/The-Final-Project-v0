@@ -9,21 +9,17 @@ use Illuminate\Support\Facades\Gate;
 class LikeController extends Controller
 {
     /**
-     * Display a listing of the user's resources.
-     */
-
-    public function userLikes(Request $request)
-    {
-        $likes = $request->user()->likes()->paginate(20);
-        return response()->json($likes, 200);
-    }
-
-    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $likes = Like::where('project_id', $request->project_id)->get();
+        if ($request->has('project_id')) {
+            $request->validate(['project_id' => 'required|exists:projects,id']);
+            $likes = Like::where('project_id', $request->project_id)->paginate(20);
+            return response()->json($likes, 200);
+        }
+
+        $likes = $request->user()->likes()->paginate(20);
         return response()->json($likes, 200);
     }
 
