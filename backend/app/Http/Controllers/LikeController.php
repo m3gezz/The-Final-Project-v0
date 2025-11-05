@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Gate;
 class LikeController extends Controller
 {
     /**
+     * Display a listing of the user's resources.
+     */
+
+    public function userLikes(Request $request)
+    {
+        $likes = $request->user()->likes()->paginate(20);
+        return response()->json($likes, 200);
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
@@ -32,13 +42,12 @@ class LikeController extends Controller
 
         if ($exists) {
             $data = ['message' => 'Already liked this project'];
-            return response()->json($data, 200);
+            return response()->json($data, 422);
         }
 
         $fields['owner'] = $request->user()->only(['id', 'first_name', 'last_name', 'avatar_url']);
         $like = $request->user()->likes()->create($fields);
 
-        // $like = Like::create($fields);
         return response()->json($like, 200);
     }
 

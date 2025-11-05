@@ -27,6 +27,7 @@ class User extends Authenticatable
         'avatar_url',
         'skills',
         'admin',
+        'terms',
     ];
 
     /**

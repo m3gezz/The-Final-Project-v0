@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
 use App\Models\ProjectMember;
 use App\Models\ProjectRequest;
 use Illuminate\Http\Request;
@@ -10,6 +9,17 @@ use Illuminate\Support\Facades\Gate;
 
 class ProjectRequestController extends Controller
 {
+    /**
+     * Display a listing of the user's resources.
+     */
+
+    public function userProjectRequests(Request $request)
+    {
+        $projectRequests = $request->user()->projectRequests()->with('project')->paginate(20);
+
+        return response()->json($projectRequests, 200);
+    }
+
     /**
      * Display a listing of the resource.
      */

@@ -8,12 +8,23 @@ use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
+
+    /**
+     * Display a listing of the user's resources.
+     */
+
+    public function userComments(Request $request)
+    {
+        $comments = $request->user()->comments()->paginate(20);
+        return response()->json($comments, 200);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $comments = Comment::where('project_id', $request->project_id)->get();
+        $comments = Comment::where('project_id', $request->project_id)->paginate(20);
         return response()->json($comments, 200);
     }
 

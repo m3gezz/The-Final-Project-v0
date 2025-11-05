@@ -10,11 +10,50 @@ use Illuminate\Support\Facades\Gate;
 class ProjectController extends Controller
 {
     /**
+     * Display a listing of the user's resources.
+     */
+
+    public function userProjects(Request $request)
+    {
+        $request->validate(['user_id' => 'required|exists:users,id']);
+
+        $projects = Project::with(['members', 'category', 'user'])->withCount('likes')
+                        ->whereHas('members', function ($query) use ($request) {
+                            $query->where('user_id', $request->user_id);
+                        })
+                        ->paginate(20);
+
+        return response()->json($projects, 200);
+    }
+
+    public function userOwnedProjects(Request $request)
+    {
+        $projects = $request->user()->projects()->with(['members', 'category', 'user'])->withCount('likes')->paginate(20);
+                        
+        return response()->json($projects, 200);
+    }
+
+    /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Project::with(['user','members.user','category'])->withCount(['comments', 'likes'])->paginate(20);
+        $query = Project::with(['user','members.user','category'])->withCount(['comments', 'likes']);
+
+        if ($request->has('search')) {
+            $query->where('title', 'like', '%'.$request->search.'%');
+        }
+
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        if ($request->has('sort') && $request->sort === 'likes') {
+            $query->orderBy('likes_count', 'desc');
+        }
+
+        $data = $query->paginate(20);
+
         return response()->json($data, 200);
     }
 

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('avatar_url')->nullable();
             $table->json('skills')->default(json_encode([]));
             $table->boolean('admin')->default(false);
+            $table->boolean('terms')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

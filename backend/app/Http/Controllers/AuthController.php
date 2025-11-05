@@ -19,8 +19,14 @@ class AuthController extends Controller
                 'avatar_url' => 'sometimes|string',
                 'skills' => 'sometimes|array',
                 'admin' => 'sometimes|boolean',
+                'terms' => 'required|boolean',
             ]
         );
+
+        if (!$fields['terms']) {
+            $data = ['message' => 'Must accept the terms and conditions'];
+            return response()->json($data, 422);
+        }
 
         $user = User::create($fields);
         $user->refresh();
