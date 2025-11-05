@@ -18,15 +18,10 @@ class AuthController extends Controller
                 'bio' => 'sometimes|string|max:255',
                 'avatar_url' => 'sometimes|string',
                 'skills' => 'sometimes|array',
-                'admin' => 'sometimes|boolean',
-                'terms' => 'required|boolean',
+                'admin' => 'sometimes|boolean',//remember to hide this using unset($fields['admin']);
+                'terms' => 'required|accepted',
             ]
         );
-
-        if (!$fields['terms']) {
-            $data = ['message' => 'Must accept the terms and conditions'];
-            return response()->json($data, 422);
-        }
 
         $user = User::create($fields);
         $user->refresh();
