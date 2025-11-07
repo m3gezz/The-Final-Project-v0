@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectInvitationController;
 use App\Http\Controllers\ProjectMemberController;
 use App\Http\Controllers\ProjectRequestController;
 use App\Http\Controllers\UserController;
@@ -22,12 +23,16 @@ Route::apiResource('/users', UserController::class)->middleware('auth:sanctum');
 
 //Projects
 Route::apiResource('/projects', ProjectController::class)->middleware('auth:sanctum');
+Route::post('/user_projects', [ProjectController::class, 'userProjects'])->middleware('auth:sanctum');
 
 //Project members
 Route::apiResource('/project_members', ProjectMemberController::class)->middleware('auth:sanctum');
 
 //Project requests
 Route::apiResource('/project_requests', ProjectRequestController::class)->middleware('auth:sanctum');
+
+//Project invitations
+Route::apiResource('/project_invitations', ProjectInvitationController::class)->middleware('auth:sanctum');
 
 //Project comments
 Route::apiResource('/comments', CommentController::class)->middleware('auth:sanctum');
