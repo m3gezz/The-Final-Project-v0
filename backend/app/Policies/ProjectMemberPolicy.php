@@ -29,7 +29,6 @@ class ProjectMemberPolicy
      */
     public function create(User $user, Project $project): bool
     {
-        if (!$project) return false;
         $adminIds = $project->members
         ->where('role', 'admin')
         ->pluck('user_id');

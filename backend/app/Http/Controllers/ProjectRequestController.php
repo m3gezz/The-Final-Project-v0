@@ -40,7 +40,7 @@ class ProjectRequestController extends Controller
         $haRequest = ProjectRequest::where('project_id', $fields['project_id'])->where('user_id', $request->user()->id)->exists();
 
         if ($alreadyMember || $haRequest) {
-            return ['message' => 'You either already a member, or you have a request'];
+            return response()->json(['message' => 'You either already a member, or you have a request'], 400);
         }
 
         $projectRequest = $request->user()->projectRequests()->create($fields);
